@@ -85,3 +85,45 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.changePassword = (req,res) => {
+
+  const id = req.body.id;
+  console.log(id)
+  const password = bcrypt.hashSync(req.body.password, 8)
+  User.update({
+    
+    password : password
+
+  },{
+    
+    where : { id : id }
+
+  })
+  .then(num =>{
+
+    if(num == 1 ){
+
+        res.send({
+
+            messege: 'Password was updated  Succesfully '
+
+        })
+
+    }
+
+})
+.catch(err =>{
+
+    res.status(500).send({
+
+        err:
+        err.messege || 'Some Error Occured '
+
+    })
+
+
+})
+
+
+}
